@@ -2,4 +2,4 @@
 # a script that groups visitors by IP and HTTP status code, and displays this data.
 # format: OCCURENCE_NUMBER IP HTTP_CODE
 
-awk '{print $1 " " $9}' apache-access.log | sort | uniq -c | sort -r
+awk '{print $1 " " $9}' apache-access.log | sort | uniq -c | sort
