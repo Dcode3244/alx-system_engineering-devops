@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# a script that displays the content of the file /etc/passwd.
+# it displays only:
+# username
+# user id
+# Home directory path for the user
+
+cut -d ':' -f1,3,6 /etc/passwd
