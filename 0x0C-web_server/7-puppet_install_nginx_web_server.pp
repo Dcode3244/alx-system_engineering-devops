@@ -5,7 +5,7 @@ provider => 'apt',
 }
 
 exec {'alx':
-command => '/usr/bin/sudo /bin/echo "Hello World!" > /etc/nginx/html/index.html',
+command => '/usr/bin/sudo /bin/echo "Hello World!" > /var/www/html/index.nginx-debian.html',
 }
 
 exec {'redirect_page':
