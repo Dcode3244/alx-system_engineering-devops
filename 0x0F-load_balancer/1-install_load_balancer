@@ -41,4 +41,4 @@ listen alx
 	server 77258-web-02 52.91.160.57:80 check
 " >> /etc/haproxy/haproxy.cfg
 
-service haproxy restart
+service haproxy start
