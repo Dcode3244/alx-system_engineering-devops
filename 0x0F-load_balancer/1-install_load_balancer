@@ -25,16 +25,17 @@ defaults
 	option  dontlognull
 	retries 3
 	option redispatch
-	timeout connect  5000
-	timeout client  10000
-	timeout server  10000
+	timeout connect 10000
+	timeout client  50000
+	timeout server  50000
 
-listen alx
+frontend alx-frontend
 	bind *:80
 	mode http
+	default_backend alx-backend
+
+backend alx-backend
 	balance roundrobin
-	option httpclose
-	option forwardfor
 	server 77258-web-01 54.237.104.37:80 check
 	server 77258-web-02 52.91.160.57:80 check
 " >> /etc/haproxy/haproxy.cfg
