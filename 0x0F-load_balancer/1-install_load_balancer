@@ -3,8 +3,8 @@
 
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends software-properties-common
-sudo add-apt-repository -y ppa:vbernat/haproxy-2.6
-sudo apt-get install -y haproxy=2.6.\*
+sudo add-apt-repository -y ppa:vbernat/haproxy-2.7
+sudo apt-get install -y haproxy=2.7.\*
 
 
 echo "ENABLED=1" >> /etc/default/haproxy
@@ -32,8 +32,6 @@ defaults
 listen alx
 	bind *:80
 	mode http
-	stats enable
-	stats uri /haproxy?stats
 	balance roundrobin
 	option httpclose
 	option forwardfor
@@ -41,4 +39,4 @@ listen alx
 	server 77258-web-02 52.91.160.57:80 check
 " >> /etc/haproxy/haproxy.cfg
 
-service haproxy start
+sudo service haproxy restart
