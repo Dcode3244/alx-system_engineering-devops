@@ -35,7 +35,7 @@ listen alx
     stats enable
     stats uri /haproxy?stats
     balance roundrobin
-    option httpclose
+    option http-keep-alive
     option forwardfor
     server 77258-web-01 54.237.104.37:80 check
     server 77258-web-02 35.174.176.205:80 check
