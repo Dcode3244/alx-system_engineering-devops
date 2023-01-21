@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# configure nginx to run and listen on port 80 of all the server's active ipv4 ips
+sudo ln -fs /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+sudo service nginx restart
+echo "" > /run/nginx.pid
