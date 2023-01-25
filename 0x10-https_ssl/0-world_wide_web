@@ -1,0 +1,19 @@
+#!/bin/bash
+# display information about subdomains.
+func () {
+	ans=$(dig "$1" | grep -A1 "ANSWER SECTION:" | awk 'NR == 2 {print $0}')
+	ip=$(echo "$ans" | awk '{print $NF}')
+	record=$(echo "$ans" | awk '{print $4}')
+	subdomain=$(echo "$ans" | awk '{print $1}'| awk 'BEGIN{FS = "."}{print $1}')
+	echo "The subdomain $subdomain is a $record record and points to $ip"
+}
+
+if [ -z "$2" ]
+then
+	func "www.$1"
+	func "lb-01.$1"
+	func "web-01.$1"
+	func "web-02.$1"
+else
+	func "${2}.$1"
+fi
