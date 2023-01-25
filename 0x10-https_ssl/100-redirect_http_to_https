@@ -37,8 +37,7 @@ defaults
 frontend dagim.tech-frontend-http
 	bind *:80
 	http-request set-header X-Forwarded-Proto http
-	acl has_www hdr_beg(host) -i www
-	http-request redirect code 301 location https://www.dagim.tech if has_www
+	http-request redirect scheme https code 301 unless { ssl_fc }
 	default_backend dagim.tech-backend
 
 frontend dagim.tech-frontend-https
