@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # display information about subdomains.
+# USAGE: /0-world-wide-web <domain> <subdomain>
+
 func () {
 	ans=$(dig "$1" | grep -A1 "ANSWER SECTION:" | awk 'NR == 2 {print $0}')
 	ip=$(echo "$ans" | awk '{print $NF}')
