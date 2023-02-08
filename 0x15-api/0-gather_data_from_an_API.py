@@ -3,23 +3,24 @@
 employee todo list progress
 '''
 
-from sys import argv
-import requests
+if __name__ == '__main__':
+    from sys import argv
+    import requests
 
-nameUrl = 'https://jsonplaceholder.typicode.com/users/{}'.format(argv[1])
-todoUrl = 'https://jsonplaceholder.typicode.com/todos'
+    nameUrl = 'https://jsonplaceholder.typicode.com/users/{}'.format(argv[1])
+    todoUrl = 'https://jsonplaceholder.typicode.com/todos'
 
-name = requests.get(nameUrl).json().get('name')
-todos = requests.get(todoUrl, params={'userId': int(argv[1])}).json()
+    name = requests.get(nameUrl).json().get('name')
+    todos = requests.get(todoUrl, params={'userId': int(argv[1])}).json()
 
-total = len(todos)
-done = 0
+    total = len(todos)
+    done = 0
 
-for todo in todos:
-    if todo.get('completed') is True:
-        done += 1
+    for todo in todos:
+        if todo.get('completed') is True:
+            done += 1
 
-print('Employee {} is done with tasks({}/{}):'.format(name, done, total))
-for todo in todos:
-    if todo.get('completed') is True:
-        print('\t', todo.get("title"))
+    print('Employee {} is done with tasks({}/{}):'.format(name, done, total))
+    for todo in todos:
+        if todo.get('completed') is True:
+            print('\t', todo.get("title"))
