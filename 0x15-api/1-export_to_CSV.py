@@ -17,6 +17,6 @@ if __name__ == '__main__':
 
     data = [[argv[1], user, t.get('completed'), t.get('title')] for t in todos]
 
-    with open('exp.csv', 'w') as f:
+    with open(argv[1] + '.csv', 'w') as f:
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         [writer.writerow(d) for d in data]
