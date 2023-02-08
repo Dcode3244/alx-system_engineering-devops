@@ -4,8 +4,8 @@ employee todo list progress
 '''
 
 if __name__ == '__main__':
-    from sys import argv
     import requests
+    from sys import argv
 
     nameUrl = 'https://jsonplaceholder.typicode.com/users/{}'.format(argv[1])
     todoUrl = 'https://jsonplaceholder.typicode.com/todos'
