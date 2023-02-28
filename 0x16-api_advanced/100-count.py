@@ -39,18 +39,15 @@ def count_words(subreddit, word_list, hot_list=[], key_words={}):
     after = res.json().get('data').get('after')
     h_list = [("after={}".format(after))]
     if after is None:
-        if len(key_words) > 0:
-            sorted_print(key_words)
-        return
-    count_words(subreddit, word_list, h_list, key_words)
+        if len(key_words) == 0:
+            print("")
+            return
+        sorted_print(key_words)
+    else:
+        count_words(subreddit, word_list, h_list, key_words)
 
 
 def sorted_print(key_words):
     """ prints words with their count in descending order """
-    s_key = list(key_words.keys())
-    s_key.sort()
-    sorted_by_key = {i: key_words[i] for i in s_key}
-    s_val = sorted(sorted_by_key.items(), key=lambda x: x[1], reverse=True)
-    s_val = dict(s_val)
-    for key, value in s_val.items():
-        print("{}: {}".format(key, value))
+    key_words = sorted(key_words.items(), key=lambda kv: (-kv[1], kv[0]))
+    [print("{}: {}".format(k, v)) for k, v in key_words]
