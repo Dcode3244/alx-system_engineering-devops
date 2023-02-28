@@ -9,8 +9,13 @@ import requests
 
 def count_words(subreddit, word_list, hot_list=[], key_words={}):
     """
-        prints sorted count of given keywords from a given subreddit
-        hot titles.
+    prints count of given keywords found in hot posts of a given subreddit
+
+    Args:
+        subreddit (str): The subreddit to search
+        word_list (list): The list of words to search for
+        hot_list (list): contains value of after key
+        key_words (dict): dictionary of found words with their count
     """
     if len(hot_list):
         after = hot_list[0]
