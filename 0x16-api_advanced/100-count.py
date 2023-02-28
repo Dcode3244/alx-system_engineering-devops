@@ -26,10 +26,14 @@ def count_words(subreddit, word_list, hot_list=[], key_words={}):
         return
     topics = res.json().get('data').get('children')
     for topic in topics:
-        title = topic.get('data').get('title').lower()
+        title = topic.get('data').get('title').lower().split()
         for word in word_list:
             word = word.lower()
-            num = title.count(word)
+            num = 0
+            if word in title:
+                for t in title:
+                    if word == t:
+                        num += 1
             if key_words.get(word) is None:
                 if num != 0:
                     key_words[word] = num
@@ -40,14 +44,8 @@ def count_words(subreddit, word_list, hot_list=[], key_words={}):
     h_list = [("after={}".format(after))]
     if after is None:
         if len(key_words) == 0:
-            print("")
             return
-        sorted_print(key_words)
+        key_words = sorted(key_words.items(), key=lambda kv: (-kv[1], kv[0]))
+        [print("{}: {}".format(k, v)) for k, v in key_words]
     else:
         count_words(subreddit, word_list, h_list, key_words)
-
-
-def sorted_print(key_words):
-    """ prints words with their count in descending order """
-    key_words = sorted(key_words.items(), key=lambda kv: (-kv[1], kv[0]))
-    [print("{}: {}".format(k, v)) for k, v in key_words]
