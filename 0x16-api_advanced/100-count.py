@@ -1,43 +1,56 @@
 #!/usr/bin/python3
-"""Contains the count_words function"""
+"""
+queries the Reddit API, parses the title of all hot articles,
+and prints a sorted count of given keywords
+(case-insensitive, delimited by spaces.).
+"""
 import requests
 
 
-def count_words(subreddit, word_list, found_list=[], after=None):
-    '''Prints counts of given words found in hot posts of a given subreddit.
+def count_words(subreddit, word_list, hot_list=[], key_words={}):
+    """
+    prints count of given keywords found in hot posts of a given subreddit
 
     Args:
-        subreddit (str): The subreddit to search.
-        word_list (list): The list of words to search for in post titles.
-        found_list (obj): Key/value pairs of words/counts.
-        after (str): The parameter for the next page of the API results.
-    '''
-    user_agent = {'User-agent': 'test45'}
-    posts = requests.get('http://www.reddit.com/r/{}/hot.json?after={}'
-                         .format(subreddit, after), headers=user_agent)
-    if after is None:
-        word_list = [word.lower() for word in word_list]
-
-    if posts.status_code == 200:
-        posts = posts.json()['data']
-        aft = posts['after']
-        posts = posts['children']
-        for post in posts:
-            title = post['data']['title'].lower()
-            for word in title.split(' '):
-                if word in word_list:
-                    found_list.append(word)
-        if aft is not None:
-            count_words(subreddit, word_list, found_list, aft)
-        else:
-            result = {}
-            for word in found_list:
-                if word.lower() in result.keys():
-                    result[word.lower()] += 1
-                else:
-                    result[word.lower()] = 1
-            for key, value in sorted(result.items(), key=lambda item: item[1],
-                                     reverse=True):
-                print('{}: {}'.format(key, value))
+        subreddit (str): The subreddit to search
+        word_list (list): The list of words to search for
+        hot_list (list): contains value of after key
+        key_words (dict): dictionary of found words with their count
+    """
+    if len(hot_list):
+        after = hot_list[0]
     else:
+        after = ""
+    url = "https://www.reddit.com/r/{}/hot.json?{}".format(subreddit, after)
+    headers = {"User-Agent": "ubuntu:api_advanced:v1.0.0 (by /u/dcode3244)"}
+    params = {'limit': '99'}
+    res = requests.get(url, headers=headers,
+                       allow_redirects=False,
+                       params=params)
+    if res.status_code != 200:
         return
+    topics = res.json().get('data').get('children')
+    for topic in topics:
+        title = topic.get('data').get('title').lower().split()
+        for word in word_list:
+            word = word.lower()
+            num = 0
+            if word in title:
+                for t in title:
+                    if word == t:
+                        num += 1
+            if key_words.get(word) is None:
+                if num != 0:
+                    key_words[word] = num
+            else:
+                key_words[word] = key_words[word] + num
+
+    after = res.json().get('data').get('after')
+    h_list = [("after={}".format(after))]
+    if after is None:
+        if len(key_words) == 0:
+            return
+        key_words = sorted(key_words.items(), key=lambda kv: (-kv[1], kv[0]))
+        [print("{}: {}".format(k, v)) for k, v in key_words]
+    else:
+        count_words(subreddit, word_list, h_list, key_words)
